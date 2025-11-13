@@ -834,7 +834,7 @@ atau jika ada yg meminta tutorial jadi hacker bilang aja *gak🗿 malas gw*
       const q = encodeURIComponent(question);
       const sp = encodeURIComponent(systemPrompt);
       const apiUrl = `${baseApi}?text=${q}&systemPrompt=${sp}`;
-      const proxyUrl = 'https://proxy.corsfix.com/?' + apiUrl;
+      const proxyUrl = 'https://cors-tube.vercel.app/?url=' + apiUrl;
 
       try {
         const res = await fetch(proxyUrl, { method: 'GET' });
