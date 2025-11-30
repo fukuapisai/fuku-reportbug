@@ -714,7 +714,7 @@
             paymentCheckInterval = setInterval(async () => {
                 try {
                     const apiUrl = `https://www.fuku-api.my.id/api/gatcheck?transactionId=${currentTransactionId}`;
-                    const proxy = 'https://cors-tube.vercel.app/?url=' + encodeURIComponent(apiUrl);
+                    const proxy = 'https://cors-tube.vercel.app/?url=' + apiUrl;
 
                     const res = await fetch(proxy);
                     const data = await res.json();
