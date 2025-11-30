@@ -763,7 +763,7 @@ Domain   : ${data.domain}
                     showResult(msg, "success");
 
                 } else {
-                    showResult("Gagal membuat panel!", "error");
+                    showResult(`Gagal membuat panel ${data.username} ${data.password}`, "error");
                 }
 
             } catch (err) {
