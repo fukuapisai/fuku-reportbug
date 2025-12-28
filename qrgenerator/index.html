@@ -1,80 +1,41 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>F-Pay | Auto Styled QR</title>
+<title>QR Image</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-<style>
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: radial-gradient(circle at top, #050b18, #0b1a2a, #120f2e);
-  font-family: 'Poppins', sans-serif;
-  color: #fff;
-}
-.card {
-  width: 360px;
-  padding: 25px;
-  border-radius: 24px;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 0 60px rgba(122,92,255,.5);
-  text-align: center;
-}
-#qr {
-  margin: auto;
-  width: 260px;
-  height: 260px;
-  padding: 15px;
-  border-radius: 22px;
-  background: #fff;
-  box-shadow: 0 0 45px rgba(0,242,255,1);
-}
-p {
-  margin-top: 12px;
-  font-size: 12px;
-  opacity: .7;
-}
-</style>
 </head>
-<body>
+<body style="margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#000;">
 
-<div class="card">
-  <div id="qr"></div>
-  <p>QR otomatis tersimpan 😅✨</p>
-</div>
+<div id="qr"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>
 <script>
-// Ambil data dari ?=
-let data = "Halo dari F-Pay 😅✨";
-if (window.location.search.startsWith("?=")) {
-  data = decodeURIComponent(window.location.search.slice(2));
+let data = "Halo QR 😅";
+const q = window.location.search;
+
+if (q.startsWith("?=")) {
+  data = decodeURIComponent(q.slice(2).split("&")[0]);
 }
 
-// Logo F
+const onlyImg = q.includes("onlyimg=1");
+
+// logo F
 const logoF = "data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>\
-<defs>\
-<linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'>\
+<defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'>\
 <stop offset='0%' stop-color='%2300f2ff'/>\
 <stop offset='100%' stop-color='%237a5cff'/>\
-</linearGradient>\
-</defs>\
+</linearGradient></defs>\
 <rect width='200' height='200' rx='40' ry='40' fill='url(%23g)'/>\
-<text x='50%' y='62%' text-anchor='middle' font-size='120' font-family='Poppins, Arial' fill='white' font-weight='700'>F</text>\
+<text x='50%' y='62%' text-anchor='middle' font-size='120' font-family='Arial' fill='white' font-weight='700'>F</text>\
 </svg>";
 
-const qrCode = new QRCodeStyling({
-  width: 230,
-  height: 230,
-  data: data,
+const qr = new QRCodeStyling({
+  width: 300,
+  height: 300,
+  data,
   margin: 5,
   image: logoF,
   dotsOptions: {
@@ -91,23 +52,18 @@ const qrCode = new QRCodeStyling({
   backgroundOptions: { color: "#ffffff" },
   cornersSquareOptions: { type: "extra-rounded", color: "#7a5cff" },
   cornersDotOptions: { type: "dot", color: "#00f2ff" },
-  imageOptions: {
-    crossOrigin: "anonymous",
-    margin: 6,
-    imageSize: 0.3
-  }
+  imageOptions: { margin: 6, imageSize: 0.3 }
 });
 
-qrCode.append(document.getElementById("qr"));
+qr.append(document.getElementById("qr"));
 
-// Auto download ke galeri / download
-setTimeout(() => {
-  qrCode.download({
-    name: "fpay-qr",
-    extension: "png"
-  });
-}, 600);
+if (onlyImg) {
+  setTimeout(async () => {
+    const blob = await qr.getRawData("png");
+    const url = URL.createObjectURL(blob);
+    document.body.innerHTML = `<img src="${url}" style="max-width:100%;height:auto;" />`;
+  }, 500);
+}
 </script>
-
 </body>
 </html>
